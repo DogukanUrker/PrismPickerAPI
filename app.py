@@ -590,6 +590,70 @@ def imageRgba(
     return serveImage(img)  # Return the image as a response
 
 
+@app.route(
+    "/image/random/<w>/<h>"
+)  # Decorator to define the route for generating an image with random color
+def imageRandom(w, h):
+    hexCode = generateRandomHex()
+    rgb = HexConverter.hexToRgb(hexCode)
+    img = Image.new("RGB", (int(w), int(h)), rgb)
+    return serveImage(img)
+
+
+@app.route(
+    "/image/random/tailwind/<w>/<h>"
+)  # Decorator to define the route for generating an image with random tailwind color
+def imageRandomTailwind(
+    w,
+    h,
+):  # Define the imageRandomTailwind function
+    tones = [
+        "50",
+        "100",
+        "200",
+        "300",
+        "400",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "950",
+    ]  # Define the list of tones
+    file = open("colors/tailwind.json", "r")  # Open the tailwind.json file in read mode
+    colors = loads(file.read())  # Read the contents of the file and parse it as JSON
+    randomColor = choice(
+        list(colors.keys())
+    )  # Select a random color from the list of tailwind colors
+    hexCode = colors[randomColor][choice(tones)]  # Select a random tone for the color
+    rgb = HexConverter.hexToRgb(hexCode)  # Convert the hex code to RGB values
+    img = Image.new(
+        "RGB", (int(w), int(h)), rgb
+    )  # Create a new RGB image with the specified dimensions and color
+    return serveImage(img)  # Return the image as a response
+
+
+@app.route(
+    "/image/random/tailwind/tone/<tone>/<w>/<h>"
+)  # Decorator to define the route for generating an image with random tailwind color
+def imageRandomTailwindSettedTone(
+    tone,
+    w,
+    h,
+):  # Define the imageRandomTailwindSettedTone function
+    file = open("colors/tailwind.json", "r")  # Open the tailwind.json file in read mode
+    colors = loads(file.read())  # Read the contents of the file and parse it as JSON
+    randomColor = choice(
+        list(colors.keys())
+    )  # Select a random color from the list of tailwind colors
+    hexCode = colors[randomColor][tone]  # Select a random tone for the color
+    rgb = HexConverter.hexToRgb(hexCode)  # Convert the hex code to RGB values
+    img = Image.new(
+        "RGB", (int(w), int(h)), rgb
+    )  # Create a new RGB image with the specified dimensions and color
+    return serveImage(img)  # Return the image as a response
+
+
 if __name__ == "__main__":  # Check if the script is executed directly
     app.run(
         debug=True
