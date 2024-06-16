@@ -60,6 +60,12 @@ def randomRgba():
     rgba = HexConverter.hexToRgba(hexCode, randint(1,10) / 10) # Convert the hex code to RGBA values
     return {"rgba": rgba} # Return the RGBA value as a JSON object
 
+@app.get("/random")  # Decorator to define the route for generating a random color value
+def randomColor():
+    hexCode = generateRandomHex() # Generate a random hex code
+    rgb = HexConverter.hexToRgb(hexCode) # Generate a random hex code and convert it to RGB values
+    rgba = HexConverter.hexToRgba(hexCode, randint(1,10) / 10) # Generate a random hex code, RGB, and RGBA values
+    return {"hex": hexCode, "rgb": rgb, "rgba": rgba} # Return the hex code, RGB, and RGBA values as a JSON object
 
 if __name__ == "__main__":
     app.run(debug=True)  # Run the Flask application in debug mode if the script is executed directly
