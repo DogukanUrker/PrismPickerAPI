@@ -1,2 +1,2 @@
 # PrismPickerAPI
- Random colors APİ
+ Random colors API
