@@ -19,7 +19,9 @@ app = Flask(__name__)  # Create a Flask application
 
 @app.get("/")  # Decorator to define the route for the home page
 def home():  # Define the home function
-    return "Welcome to the Prism Picker API!"  # Return a welcome message when the home page is accessed
+    return {
+        "Message": "Welcome to the Prism Picker API!"
+    }  # Return a welcome message as a JSON object
 
 
 @app.errorhandler(404)  # Decorator to define the route for handling 404 errors
@@ -743,6 +745,339 @@ def randomTailwindGradient(
             img.putpixel((x, y), (r, g, b))  # Set the pixel color in the image
     return serveImage(img)  # Return the image as a response
 
+
+@app.route(
+    "/image/tailwind/<color>/<tone>/<w>/<h>"
+)  # Decorator to define the route for generating an image with a specific tailwind color
+def imageTailwind(
+    color, tone, w, h
+):  # Define the imageTailwind function that takes the color, tone, and dimensions as arguments
+    file = open("colors/tailwind.json", "r")  # Open the tailwind.json file in read mode
+    colors = loads(file.read())  # Read the contents of the file and parse it as JSON
+    hexCode = colors[color][tone]  # Select the specified tone for the color
+    rgb = HexConverter.hexToRgb(hexCode)  # Convert the hex code to RGB values
+    img = Image.new(
+        "RGB", (int(w), int(h)), rgb
+    )  # Create a new RGB image with the specified dimensions and color
+    return serveImage(img)  # Return the image as a response
+
+
+@app.route(
+    "/material"
+)  # Decorator to define the route for returning all the material colors
+def material():  # Define the material function
+    file = open("colors/material.json", "r")  # Open the material.json file in read mode
+    colors = loads(file.read())  # Read the contents of the file and parse it as JSON
+    return colors  # Return the colors as a JSON object
+
+
+@app.route(
+    "/material/<color>"
+)  # Decorator to define the route for returning a specific material color
+def materialColor(
+    color,
+):  # Define the materialColor function that takes the color name as an argument
+    color = color.lower()  # Convert the color name to lowercase
+    file = open("colors/material.json", "r")  # Open the material.json file in read mode
+    colors = loads(file.read())  # Read the contents of the file and parse it as JSON
+    return colors.get(
+        color, {"Message": f"Color '{color}' not found."}
+    )  # Return the color if found, else return a message
+
+
+@app.route(
+    "/material/random"
+)  # Decorator to define the route for generating a random material color
+def randomMaterial():  # Define the randomMaterial function
+    file = open("colors/material.json", "r")  # Open the material.json file in read mode
+    colors = loads(file.read())  # Read the contents of the file and parse it as JSON
+    randomColor = choice(
+        list(colors.keys())
+    )  # Select a random color from the list of material colors
+    return colors[randomColor]  # Return the random color as a JSON object
+
+
+@app.route(
+    "/material/random/<count>"
+)  # Decorator to define the route for generating multiple random material colors
+def randomMaterials(
+    count,
+):  # Define the randomMaterials function that takes the count as an argument
+    file = open("colors/material.json", "r")  # Open the material.json file in read mode
+    colors = loads(file.read())  # Read the contents of the file and parse it as JSON
+    randomColors = [
+        colors[choice(list(colors.keys()))] for _ in range(int(count))
+    ]  # Select multiple random colors from the list of material colors
+    return randomColors  # Return the random colors as a JSON object
+
+
+@app.route(
+    "/material/random/hex"
+)  # Decorator to define the route for generating a random material hex code
+def randomMaterialHex():  # Define the randomMaterialHex function
+    tones = [
+        "50",
+        "100",
+        "200",
+        "300",
+        "400",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "a100",
+        "a200",
+        "a400",
+        "a700",
+    ]  # Define the list of tones
+    file = open("colors/material.json", "r")  # Open the material.json file in read mode
+    colors = loads(file.read())  # Read the contents of the file and parse it as JSON
+    randomColor = choice(
+        list(colors.keys())
+    )  # Select a random color from the list of material colors
+    return {
+        "hex": colors[randomColor][choice(tones)]
+    }  # Return the random hex code as a JSON object
+
+
+@app.route(
+    "/material/random/rgb"
+)  # Decorator to define the route for generating a random material RGB value
+def randomMaterialRgb():  # Define the randomMaterialRgb function
+    tones = [
+        "50",
+        "100",
+        "200",
+        "300",
+        "400",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "a100",
+        "a200",
+        "a400",
+        "a700",
+    ]  # Define the list of tones
+    file = open("colors/material.json", "r")  # Open the material.json file in read mode
+    colors = loads(file.read())  # Read the contents of the file and parse it as JSON
+    randomColor = choice(
+        list(colors.keys())
+    )  # Select a random color from the list of material colors
+    hexCode = colors[randomColor][choice(tones)]  # Select a random tone for the color
+    rgb = HexConverter.hexToRgb(hexCode)  # Convert the hex code to RGB values
+    return {"rgb": rgb}  # Return the RGB value as a JSON object
+
+
+@app.route(
+    "/material/random/hex/<count>"
+)  # Decorator to define the route for generating multiple random material hex codes
+def randomMaterialHexes(
+    count,
+):  # Define the randomMaterialHexes function that takes the count as an argument
+    tones = [
+        "50",
+        "100",
+        "200",
+        "300",
+        "400",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "a100",
+        "a200",
+        "a400",
+        "a700",
+    ]  # Define the list of tones
+    file = open("colors/material.json", "r")  # Open the material.json file in read mode
+    colors = loads(file.read())  # Read the contents of the file and parse it as JSON
+    hexCodes = [
+        colors[choice(list(colors.keys()))][choice(tones)] for _ in range(int(count))
+    ]  # Select multiple random hex codes from the list of material colors
+    return {"hex": hexCodes}  # Return the hex codes as a JSON object
+
+
+@app.route(
+    "/material/random/rgb/<count>"
+)  # Decorator to define the route for generating multiple random material RGB values
+def randomMaterialRgbs(
+    count,
+):  # Define the randomMaterialRgbs function that takes the count as an argument
+    tones = [
+        "50",
+        "100",
+        "200",
+        "300",
+        "400",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "a100",
+        "a200",
+        "a400",
+        "a700",
+    ]  # Define the list of tones
+    file = open("colors/material.json", "r")  # Open the material.json file in read mode
+    colors = loads(file.read())  # Read the contents of the file and parse it as JSON
+    hexCodes = [
+        colors[choice(list(colors.keys()))][choice(tones)] for _ in range(int(count))
+    ]  # Select multiple random hex codes from the list of material colors
+    rgbs = [
+        HexConverter.hexToRgb(hexCode) for hexCode in hexCodes
+    ]  # Convert the hex codes to RGB values
+    return {"rgb": rgbs}  # Return the RGB values as a JSON object
+
+
+@app.route(
+    "/image/material/<color>/<w>/<h>"
+)  # Decorator to define the route for generating an image with a specific material color
+def imageMaterial(
+    color, w, h
+):  # Define the imageMaterial function that takes the color and dimensions as arguments
+    file = open("colors/material.json", "r")  # Open the material.json file in read mode
+    colors = loads(file.read())  # Read the contents of the file and parse it as JSON
+    rgb = HexConverter.hexToRgb(
+        colors[color]["500"]
+    )  # Convert the hex code to RGB values
+    img = Image.new(
+        "RGB", (int(w), int(h)), rgb
+    )  # Create a new RGB image with the specified dimensions and color
+    return serveImage(img)  # Return the image as a response
+
+
+@app.route(
+    "/image/material/gradient/<color1>/<color2>/<w>/<h>"
+)  # Decorator to define the route for generating a gradient image
+def gradientMaterial(
+    color1, color2, w, h
+):  # Define the gradientMaterial function that takes the hex codes of two colors and dimensions as arguments
+    file = open("colors/material.json", "r")  # Open the material.json file in read mode
+    colors = loads(file.read())  # Read the contents of the file and parse it as JSON
+    rgb1 = HexConverter.hexToRgb(
+        colors[color1]["500"]
+    )  # Convert the first hex code to RGB values
+    rgb2 = HexConverter.hexToRgb(
+        colors[color2]["500"]
+    )  # Convert the second hex code to RGB values
+    img = Image.new(
+        "RGB", (int(w), int(h))
+    )  # Create a new RGB image with the specified dimensions
+
+    for x in range(int(w)):  # Iterate over the width of the image
+        for y in range(int(h)):  # Iterate over the height of the image
+            r = int(
+                rgb1[0] + (rgb2[0] - rgb1[0]) * x / int(w)
+            )  # Calculate the red value based on the gradient
+            g = int(
+                rgb1[1] + (rgb2[1] - rgb1[1]) * x / int(w)
+            )  # Calculate the green value based on the gradient
+            b = int(
+                rgb1[2] + (rgb2[2] - rgb1[2]) * x / int(w)
+            )  # Calculate the blue value based on the gradient
+            img.putpixel((x, y), (r, g, b))  # Set the pixel color in the image
+    return serveImage(img)  # Return the image as a response
+
+
+@app.route(
+    "/image/material/random/<w>/<h>"
+)  # Decorator to define the route for generating an image with random material color
+def imageRandomMaterial(
+    w, h
+):  # Define the imageRandomMaterial function that takes the dimensions as arguments
+    file = open("colors/material.json", "r")  # Open the material.json file in read mode
+    colors = loads(file.read())  # Read the contents of the file and parse it as JSON
+    randomColor = choice(
+        list(colors.keys())
+    )  # Select a random color from the list of material colors
+    rgb = HexConverter.hexToRgb(
+        colors[randomColor]["500"]
+    )  # Convert the hex code to RGB values
+    img = Image.new(
+        "RGB", (int(w), int(h)), rgb
+    )  # Create a new RGB image with the specified dimensions and color
+    return serveImage(img)  # Return the image as a response
+
+
+@app.route(
+    "/image/material/random/gradient/<w>/<h>"
+)  # Decorator to define the route for generating a random gradient image
+def randomGradientMaterial(
+    w, h
+):  # Define the randomGradientMaterial function that takes the dimensions as arguments
+    file = open("colors/material.json", "r")  # Open the material.json file in read mode
+    colors = loads(file.read())  # Read the contents of the file and parse it as JSON
+    randomColor1 = choice(
+        list(colors.keys())
+    )  # Select a random color from the list of material colors
+    randomColor2 = choice(
+        list(colors.keys())
+    )  # Select a random color from the list of material colors
+    rgb1 = HexConverter.hexToRgb(
+        colors[randomColor1]["500"]
+    )  # Convert the first hex code to RGB values
+    rgb2 = HexConverter.hexToRgb(
+        colors[randomColor2]["500"]
+    )  # Convert the second hex code to RGB values
+    img = Image.new(
+        "RGB", (int(w), int(h))
+    )  # Create a new RGB image with the specified dimensions
+    for x in range(int(w)):  # Iterate over the width of the image
+        for y in range(int(h)):  # Iterate over the height of the image
+            r = int(
+                rgb1[0] + (rgb2[0] - rgb1[0]) * x / int(w)
+            )  # Calculate the red value based on the gradient
+            g = int(
+                rgb1[1] + (rgb2[1] - rgb1[1]) * x / int(w)
+            )  # Calculate the green value based on the gradient
+            b = int(
+                rgb1[2] + (rgb2[2] - rgb1[2]) * x / int(w)
+            )  # Calculate the blue value based on the gradient
+            img.putpixel((x, y), (r, g, b))  # Set the pixel color in the image
+    return serveImage(img)  # Return the image as a response
+
+
+@app.route(
+    "/image/material/random/tone/gradient/<tone>/<w>/<h>"
+)  # Decorator to define the route for generating a random material gradient image
+def randomToneGradientMaterial(
+    tone, w, h
+):  # Define the randomToneGradientMaterial function that takes the tone and dimensions as arguments
+    file = open("colors/material.json", "r")  # Open the material.json file in read mode
+    colors = loads(file.read())  # Read the contents of the file and parse it as JSON
+    randomColor1 = choice(
+        list(colors.keys())
+    )  # Select a random color from the list of material colors
+    randomColor2 = choice(
+        list(colors.keys())
+    )  # Select a random color from the list of material colors
+    rgb1 = HexConverter.hexToRgb(
+        colors[randomColor1][tone]
+    )  # Convert the first hex code to RGB values
+    rgb2 = HexConverter.hexToRgb(
+        colors[randomColor2][tone]
+    )  # Convert the second hex code to RGB values
+    img = Image.new(
+        "RGB", (int(w), int(h))
+    )  # Create a new RGB image with the specified dimensions
+    for x in range(int(w)):  # Iterate over the width of the image
+        for y in range(int(h)):  # Iterate over the height of the image
+            r = int(
+                rgb1[0] + (rgb2[0] - rgb1[0]) * x / int(w)
+            )  # Calculate the red value based on the gradient
+            g = int(
+                rgb1[1] + (rgb2[1] - rgb1[1]) * x / int(w)
+            )  # Calculate the green value based on the gradient
+            b = int(
+                rgb1[2] + (rgb2[2] - rgb1[2]) * x / int(w)
+            )  # Calculate the blue value based on the gradient
+            img.putpixel((x, y), (r, g, b))  # Set the pixel color in the image
+    return serveImage(img)  # Return the image as a response
 
 
 if __name__ == "__main__":  # Check if the script is executed directly
