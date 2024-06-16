@@ -681,7 +681,7 @@ def gradientHex(
 
 
 @app.route(
-    "/image/random/gradients/<w>/<h>"
+    "/image/random/gradient/<w>/<h>"
 )  # Decorator to define the route for generating a random gradient image
 def randomGradient(
     w, h
@@ -742,6 +742,7 @@ def randomTailwindGradient(
             )  # Calculate the blue value based on the gradient
             img.putpixel((x, y), (r, g, b))  # Set the pixel color in the image
     return serveImage(img)  # Return the image as a response
+
 
 
 if __name__ == "__main__":  # Check if the script is executed directly
