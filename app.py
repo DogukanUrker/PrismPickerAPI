@@ -1,7 +1,8 @@
 from flask import Flask  # Import the Flask module for creating the API
 from converter import HexConverter, RGBConverter, RGBAConverter  # Import the converter module
 from utils import generateRandomHex  # Import the generateRandomHex function
-from random import randint  # Import the randint function from the random module
+from random import randint, choice  # Import the randint and choice functions from the random module
+from json import loads  # Import the loads function from the json module
 
 app = Flask(__name__)  # Create a Flask application
 
@@ -90,6 +91,34 @@ def randomColors(count): # Define the randomColors function that takes the count
     rgbs = [HexConverter.hexToRgb(hexCode) for hexCode in hexCodes] # Convert the hex codes to RGB values
     rgbas = [HexConverter.hexToRgba(hexCode, randint(1,10) / 10) for hexCode in hexCodes] # Convert the hex codes to RGBA values
     return {"hex": hexCodes, "rgb": rgbs, "rgba": rgbas} # Return the hex codes, RGB, and RGBA values as a JSON object
+
+@app.get("/tailwind")  # Decorator to define the route for returns all the tailwind colors
+def tailwind(): # Define the tailwind function
+    file = open("colors/tailwind.json", "r") # Open the tailwind.json file in read mode
+    colors = loads(file.read()) # Read the contents of the file and parse it as JSON
+    return colors # Return the colors as a JSON object
+
+@app.get("/tailwind/<color>")  # Decorator to define the route for returning a specific tailwind color
+def tailwindColor(color): # Define the tailwindColor function that takes the color name as an argument
+    color = color.lower() # Convert the color name to lowercase
+    file = open("colors/tailwind.json", "r") # Open the tailwind.json file in read mode
+    colors = loads(file.read()) # Read the contents of the file and parse it as JSON
+    return colors.get(color, {"Message": f"Color '{color}' not found."}) # Return the color if found, else return a message
+ 
+@app.get("/tailwind/random")  # Decorator to define the route for generating a random tailwind color
+def randomTailwind(): # Define the randomTailwind function
+    file = open("colors/tailwind.json", "r") # Open the tailwind.json file in read mode
+    colors = loads(file.read()) # Read the contents of the file and parse it as JSON
+    randomColor = choice(list(colors.keys())) # Select a random color from the list of tailwind colors
+    return colors[randomColor] # Return the random color as a JSON object
+    
+@app.get("/tailwind/random/<count>")  # Decorator to define the route for generating multiple random tailwind colors
+def randomTailwinds(count): # Define the randomTailwinds function that takes the count as an argument
+    file = open("colors/tailwind.json", "r") # Open the tailwind.json file in read mode
+    colors = loads(file.read()) # Read the contents of the file and parse it as JSON
+    randomColors = [colors[choice(list(colors.keys()))] for _ in range(int(count))] # Select multiple random colors from the list of tailwind colors
+    return randomColors # Return the random colors as a JSON object
+
 
 if __name__ == "__main__": # Check if the script is executed directly
     app.run(debug=True)  # Run the Flask application in debug mode if the script is executed directly
