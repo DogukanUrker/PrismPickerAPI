@@ -13,8 +13,11 @@ from random import (  # Import the random module to generate random values
 )  # Import the randint and choice functions from the random module
 from json import loads  # Import the loads function from the json module
 from PIL import Image  # Import the Image class from the PIL module
+from flask_cors import CORS  # Import the CORS class from the flask_cors module
 
 app = Flask(__name__)  # Create a Flask application
+
+CORS(app)  # Enable CORS for the application
 
 
 @app.get("/")  # Decorator to define the route for the home page
