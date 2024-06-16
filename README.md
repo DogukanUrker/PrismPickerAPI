@@ -1,4 +1,4 @@
-# PrismPickerAPI
+# [PrismPickerAPI](https://prism-picker-api-c0c9d0a69335.herokuapp.com)
 
 ### Features
 
@@ -7,5 +7,8 @@
 - Generate color/gradient image from tailwind, material, hex, rgb, rgba.
 - Convert color types from hex, rgb, rgba to hex, rgb, rgba.
 
-### API
+  
+### [Click for docs](https://prism-picker-api-c0c9d0a69335.herokuapp.com)
+
+#### API
 [PrismPickerAPI.pythonanywhere.com](https://prismpickerapi.pythonanywhere.com)
