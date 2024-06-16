@@ -1,5 +1,7 @@
 from flask import Flask  # Import the Flask module for creating the API
 from converter import HexConverter, RGBConverter, RGBAConverter  # Import the converter module
+from utils import generateRandomHex  # Import the generateRandomHex function
+from random import randint  # Import the randint function from the random module
 
 app = Flask(__name__)  # Create a Flask application
 
@@ -40,6 +42,24 @@ def rgbaToHex(r, g, b, alpha):
     rgba = (int(r), int(g), int(b), float(alpha))  # Convert the RGBA values to integers and float
     hexCode = RGBAConverter.rgbaToHex(rgba)  # Call the rgbaToHex method from the RGBAConverter class
     return {"hex": hexCode}  # Return the hex code as a JSON object
+
+@app.get("/random/hex")  # Decorator to define the route for generating a random hex code
+def randomHex():
+    hexCode = generateRandomHex() # Generate a random hex code
+    return {"hex": hexCode}  # Return the hex code as a JSON object
+
+@app.get("/random/rgb")  # Decorator to define the route for generating a random RGB value
+def randomRgb():
+    hexCode = generateRandomHex() # Generate a random hex code
+    rgb = HexConverter.hexToRgb(hexCode)   # Convert the hex code to RGB values
+    return {"rgb": rgb} # Return the RGB value as a JSON object
+
+@app.get("/random/rgba/")  # Decorator to define the route for generating a random RGBA value
+def randomRgba():
+    hexCode = generateRandomHex() # Generate a random hex code
+    rgba = HexConverter.hexToRgba(hexCode, randint(1,10) / 10) # Convert the hex code to RGBA values
+    return {"rgba": rgba} # Return the RGBA value as a JSON object
+
 
 if __name__ == "__main__":
     app.run(debug=True)  # Run the Flask application in debug mode if the script is executed directly
