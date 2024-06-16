@@ -1,4 +1,4 @@
-from flask import Flask  # Import the Flask class from the flask module
+from flask import Flask # Import the Flask class from the flask module
 from flask import request  # Import the request object from the flask module
 from converter import (
     HexConverter,  # Import the HexConverter class
@@ -6,11 +6,13 @@ from converter import (
     RGBAConverter,  # Import the RGBAConverter class
 )  # Import the converter module
 from utils import generateRandomHex  # Import the generateRandomHex function
+from utils import serveImage  # Import the serveImage function
 from random import (  # Import the random module to generate random values
     randint,  # Import the randint function to generate random integers
     choice,  # Import the choice function to select a random item from a list
 )  # Import the randint and choice functions from the random module
 from json import loads  # Import the loads function from the json module
+from PIL import Image # Import the Image class from the PIL module
 
 app = Flask(__name__)  # Create a Flask application
 
@@ -543,6 +545,23 @@ def rgbaMixer():  # Define the rgbaMixer function
 
     return {"rgba": mixed}  # Return the mixed RGBA values as a JSON object
 
+@app.route("/image/rgb/<r>/<g>/<b>/<w>/<h>") # Decorator to define the route for generating an image with RGB color
+def imageRgb(r,g,b,w,h): # Define the imageRgb function that takes the RGB values and dimensions as arguments
+    rgb = (int(r), int(g), int(b)) # Convert the RGB values to integers
+    img = Image.new('RGB', (int(w), int(h)), rgb) # Create a new RGB image with the specified dimensions and color
+    return serveImage(img) # Return the image as a response
+
+@app.route("/image/hex/<hex>/<w>/<h>") # Decorator to define the route for generating an image with hex color
+def imageHex(hex,w,h): # Define the imageHex function that takes the hex code and dimensions as arguments
+    rgb = HexConverter.hexToRgb(hex) # Convert the hex code to RGB values
+    img = Image.new('RGB', (int(w), int(h)), rgb) # Create a new RGB image with the specified dimensions and color
+    return serveImage(img) # Return the image as a response
+
+@app.route("/image/rgba/<r>/<g>/<b>/<a>/<w>/<h>") # Decorator to define the route for generating an image with RGBA color
+def imageRgba(r,g,b,a,w,h): # Define the imageRgba function that takes the RGBA values and dimensions as arguments
+    rgba = (int(r), int(g), int(b), float(a)) # Convert the RGB values to integers and the alpha value to a float
+    img = Image.new('RGBA', (int(w), int(h)), rgba) # Create a new RGBA image with the specified dimensions and color
+    return serveImage(img) # Return the image as a response
 
 if __name__ == "__main__":  # Check if the script is executed directly
     app.run(
