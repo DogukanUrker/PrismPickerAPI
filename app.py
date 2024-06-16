@@ -19,6 +19,15 @@ def home():  # Define the home function
     return "Welcome to the Prism Picker API!"  # Return a welcome message when the home page is accessed
 
 
+@app.errorhandler(404)  # Decorator to define the route for handling 404 errors
+def page_not_found(
+    e,
+):  # Define the page_not_found function that takes the error as an argument
+    return {
+        e.name: e.description
+    }, 404  # Return the error message and status code as a JSON object
+
+
 @app.get(
     "/convert/hex/rgb/<hexCode>"
 )  # Decorator to define the route for converting hex to RGB
