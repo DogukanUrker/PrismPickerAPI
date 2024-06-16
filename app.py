@@ -654,6 +654,96 @@ def imageRandomTailwindSettedTone(
     return serveImage(img)  # Return the image as a response
 
 
+@app.route(
+    "/image/hex/gradient/<color1>/<color2>/<w>/<h>"
+)  # Decorator to define the route for generating a gradient image
+def gradientHex(
+    color1, color2, w, h
+):  # Define the gradientHex function that takes the hex codes of two colors and dimensions as arguments
+    rgb1 = HexConverter.hexToRgb(color1)  # Convert the first hex code to RGB values
+    rgb2 = HexConverter.hexToRgb(color2)  # Convert the second hex code to RGB values
+    img = Image.new(
+        "RGB", (int(w), int(h))
+    )  # Create a new RGB image with the specified dimensions
+    for x in range(int(w)):  # Iterate over the width of the image
+        for y in range(int(h)):  # Iterate over the height of the image
+            r = int(
+                rgb1[0] + (rgb2[0] - rgb1[0]) * x / int(w)
+            )  # Calculate the red value based on the gradient
+            g = int(
+                rgb1[1] + (rgb2[1] - rgb1[1]) * x / int(w)
+            )  # Calculate the green value based on the gradient
+            b = int(
+                rgb1[2] + (rgb2[2] - rgb1[2]) * x / int(w)
+            )  # Calculate the blue value based on the gradient
+            img.putpixel((x, y), (r, g, b))  # Set the pixel color in the image
+    return serveImage(img)  # Return the image as a response
+
+
+@app.route(
+    "/image/random/gradients/<w>/<h>"
+)  # Decorator to define the route for generating a random gradient image
+def randomGradient(
+    w, h
+):  # Define the randomGradient function that takes the dimensions as arguments
+    hexCode1 = generateRandomHex()  # Generate a random hex code for the first color
+    hexCode2 = generateRandomHex()  # Generate a random hex code for the second color
+    rgb1 = HexConverter.hexToRgb(hexCode1)  # Convert the first hex code to RGB values
+    rgb2 = HexConverter.hexToRgb(hexCode2)  # Convert the second hex code to RGB values
+    img = Image.new(
+        "RGB", (int(w), int(h))
+    )  # Create a new RGB image with the specified dimensions
+    for x in range(int(w)):  # Iterate over the width of the image
+        for y in range(int(h)):  # Iterate over the height of the image
+            r = int(
+                rgb1[0] + (rgb2[0] - rgb1[0]) * x / int(w)
+            )  # Calculate the red value based on the gradient
+            g = int(
+                rgb1[1] + (rgb2[1] - rgb1[1]) * x / int(w)
+            )  # Calculate the green value based on the gradient
+            b = int(
+                rgb1[2] + (rgb2[2] - rgb1[2]) * x / int(w)
+            )  # Calculate the blue value based on the gradient
+            img.putpixel((x, y), (r, g, b))  # Set the pixel color in the image
+    return serveImage(img)  # Return the image as a response
+
+
+@app.route(
+    "/image/random/tailwind/gradient/<tone>/<w>/<h>"
+)  # Decorator to define the route for generating a random tailwind gradient image
+def randomTailwindGradient(
+    tone, w, h
+):  # Define the randomTailwindGradient function that takes the tone and dimensions as arguments
+    file = open("colors/tailwind.json", "r")  # Open the tailwind.json file in read mode
+    colors = loads(file.read())  # Read the contents of the file and parse it as JSON
+    randomColor1 = choice(
+        list(colors.keys())
+    )  # Select a random color from the list of tailwind colors
+    randomColor2 = choice(
+        list(colors.keys())
+    )  # Select a random color from the list of tailwind colors
+    hexCode1 = colors[randomColor1][tone]  # Select a random tone for the first color
+    hexCode2 = colors[randomColor2][tone]  # Select a random tone for the second color
+    rgb1 = HexConverter.hexToRgb(hexCode1)  # Convert the first hex code to RGB values
+    rgb2 = HexConverter.hexToRgb(hexCode2)  # Convert the second hex code to RGB values
+    img = Image.new(
+        "RGB", (int(w), int(h))
+    )  # Create a new RGB image with the specified dimensions
+    for x in range(int(w)):  # Iterate over the width of the image
+        for y in range(int(h)):  # Iterate over the height of the image
+            r = int(
+                rgb1[0] + (rgb2[0] - rgb1[0]) * x / int(w)
+            )  # Calculate the red value based on the gradient
+            g = int(
+                rgb1[1] + (rgb2[1] - rgb1[1]) * x / int(w)
+            )  # Calculate the green value based on the gradient
+            b = int(
+                rgb1[2] + (rgb2[2] - rgb1[2]) * x / int(w)
+            )  # Calculate the blue value based on the gradient
+            img.putpixel((x, y), (r, g, b))  # Set the pixel color in the image
+    return serveImage(img)  # Return the image as a response
+
+
 if __name__ == "__main__":  # Check if the script is executed directly
     app.run(
         debug=True
