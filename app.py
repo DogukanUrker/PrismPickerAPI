@@ -1,4 +1,5 @@
-from flask import Flask  # Import the Flask module for creating the API
+from flask import Flask  # Import the Flask class from the flask module
+from flask import request  # Import the request object from the flask module
 from converter import (
     HexConverter,  # Import the HexConverter class
     RGBConverter,  # Import the RGBConverter class
@@ -380,6 +381,167 @@ def randomTailwindRgbs(
         HexConverter.hexToRgb(hexCode) for hexCode in hexCodes
     ]  # Convert the hex codes to RGB values
     return {"rgb": rgbs}  # Return the RGB values as a JSON object
+
+
+@app.route(
+    "/mixer/rgb/<r1>/<g1>/<b1>/<r2>/<g2>/<b2>"
+)  # Decorator to define the route for mixing two RGB colors
+def mix2Rgb(
+    r1, g1, b1, r2, g2, b2
+):  # Define the mixRgb function that takes the RGB values of two colors as arguments
+    rgb1 = (int(r1), int(g1), int(b1))  # Convert the RGB values to integers
+    rgb2 = (int(r2), int(g2), int(b2))  # Convert the RGB values to integers
+    mixed = tuple(
+        int((rgb1[i] + rgb2[i]) / 2) for i in range(3)
+    )  # Calculate the average of the RGB values
+    return {"rgb": mixed}  # Return the mixed RGB value as a JSON object
+
+
+@app.route(
+    "/mixer/rgba/<r1>/<g1>/<b1>/<a1>/<r2>/<g2>/<b2>/<a2>"
+)  # Decorator to define the route for mixing two RGBA colors
+def mix2Rgba(
+    r1, g1, b1, a1, r2, g2, b2, a2
+):  # Define the mixRgba function that takes the RGBA values of two colors as arguments
+    rgba1 = (
+        int(r1),
+        int(g1),
+        int(b1),
+        float(a1),
+    )  # Convert the RGB values to integers and the alpha value to a float
+    rgba2 = (
+        int(r2),
+        int(g2),
+        int(b2),
+        float(a2),
+    )  # Convert the RGB values to integers and the alpha value to a float
+    mixed = tuple(int((rgba1[i] + rgba2[i]) / 2) for i in range(3)) + (
+        (rgba1[3] + rgba2[3]) / 2,
+    )  # Calculate the average of the RGB values and the alpha values
+    return {"rgba": mixed}  # Return the mixed RGBA value as a JSON object
+
+
+@app.route(
+    "/mixer/hex/<hex1>/<hex2>"
+)  # Decorator to define the route for mixing two hex colors
+def mix2Hex(
+    hex1, hex2
+):  # Define the mixHex function that takes the hex codes of two colors as arguments
+    rgb1 = HexConverter.hexToRgb(hex1)  # Convert the first hex code to RGB values
+    rgb2 = HexConverter.hexToRgb(hex2)  # Convert the second hex code to RGB values
+    mixed = tuple(
+        int((rgb1[i] + rgb2[i]) / 2) for i in range(3)
+    )  # Calculate the average of the RGB values
+    return {
+        "hex": RGBConverter.rgbToHex(mixed)
+    }  # Return the mixed hex code as a JSON object
+
+
+@app.route(
+    "/mixer/hex", methods=["GET"]
+)  # Decorator to define the route for mixing multiple hex colors
+def hexMixer():  # Define the hexMixer function
+    colors = request.args.getlist(
+        "color"
+    )  # Get the list of colors from the query parameters
+    if len(colors) < 2:  # Check if there are at least two colors
+        return {
+            "Bad Request": "Please provide at least two colors"
+        }, 400  # Return an error message if less than two colors are provided
+
+    rgbValues = []  # Initialize an empty list to store the RGB values
+    for color in colors:  # Iterate over the list of colors
+        rgb = HexConverter.hexToRgb(color)  # Convert the hex code to RGB values
+        if rgb:  # Check if the RGB values are valid
+            rgbValues.append(rgb)  # Add the RGB values to the list
+
+    if len(rgbValues) < 2:  # Check if there are at least two valid RGB values
+        return {
+            "Bad Request": "Invalid color(s) provided"
+        }, 400  # Return an error message if less than two valid RGB values are provided
+
+    mixed = [
+        sum(channel) // len(rgbValues) for channel in zip(*rgbValues)
+    ]  # Calculate the average of the RGB values
+    mixedHex = RGBConverter.rgbToHex(
+        mixed
+    )  # Convert the mixed RGB values to a hex code
+
+    return {"hex": mixedHex}  # Return the mixed hex code as a JSON object
+
+
+@app.route(
+    "/mixer/rgb", methods=["GET"]
+)  # Decorator to define the route for mixing multiple RGB colors
+def rgbMixer():  # Define the rgbMixer function
+    colors = request.args.getlist(
+        "color"
+    )  # Get the list of colors from the query parameters
+    if len(colors) < 2:  # Check if there are at least two colors
+        return {
+            "Bad Request": "Please provide at least two colors"
+        }, 400  # Return an error message if less than two colors are provided
+
+    rgbValues = []  # Initialize an empty list to store the RGB values
+    for color in colors:  # Iterate over the list of colors
+        rgb = [
+            int(c) for c in color.split(",")
+        ]  # Convert the color string to a list of integers
+        if len(rgb) != 3 or any(
+            c < 0 or c > 255 for c in rgb
+        ):  # Check if the RGB values are valid
+            return {
+                "Bad Request": "Invalid color(s) provided"
+            }, 400  # Return an error message if the RGB values are invalid
+        rgbValues.append(rgb)  # Add the RGB values to the list
+
+    if len(rgbValues) < 2:  # Check if there are at least two valid RGB values
+        return {
+            "Bad Request": "Invalid color(s) provided"
+        }, 400  # Return an error message if less than two valid RGB values are provided
+
+    mixed = [
+        sum(channel) // len(rgbValues) for channel in zip(*rgbValues)
+    ]  # Calculate the average of the RGB values
+
+    return {"rgb": mixed}  # Return the mixed RGB values as a JSON object
+
+
+@app.route(
+    "/mixer/rgba", methods=["GET"]
+)  # Decorator to define the route for mixing multiple RGBA colors
+def rgbaMixer():  # Define the rgbaMixer function
+    colors = request.args.getlist(
+        "color"
+    )  # Get the list of colors from the query parameters
+    if len(colors) < 2:  # Check if there are at least two colors
+        return {
+            "Bad Request": "Please provide at least two colors"
+        }, 400  # Return an error message if less than two colors are provided
+
+    rgbaValues = []  # Initialize an empty list to store the RGBA values
+    for color in colors:  # Iterate over the list of colors
+        rgba = [
+            float(c) for c in color.split(",")
+        ]  # Convert the color string to a list of floats
+        if len(rgba) != 4 or any(
+            c < 0 or c > 1 for c in rgba
+        ):  # Check if the RGBA values are valid
+            return {
+                "Bad Request": "Invalid color(s) provided"
+            }, 400  # Return an error message if the RGBA values are invalid
+        rgbaValues.append(rgba)  # Add the RGBA values to the list
+
+    if len(rgbaValues) < 2:  # Check if there are at least two valid RGBA values
+        return {
+            "Bad Request": "Invalid color(s) provided"
+        }, 400  # Return an error message if less than two valid RGBA values are provided
+
+    mixed = [
+        sum(channel) / len(rgbaValues) for channel in zip(*rgbaValues)
+    ]  # Calculate the average of the RGBA values
+
+    return {"rgba": mixed}  # Return the mixed RGBA values as a JSON object
 
 
 if __name__ == "__main__":  # Check if the script is executed directly
