@@ -119,6 +119,42 @@ def randomTailwinds(count): # Define the randomTailwinds function that takes the
     randomColors = [colors[choice(list(colors.keys()))] for _ in range(int(count))] # Select multiple random colors from the list of tailwind colors
     return randomColors # Return the random colors as a JSON object
 
+@app.get("/tailwind/random/hex")  # Decorator to define the route for generating a random tailwind hex code
+def randomTailwindHex(): # Define the randomTailwindHex function
+    tones = ["50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "950"] # Define the list of tones
+    file = open("colors/tailwind.json", "r") # Open the tailwind.json file in read mode
+    colors = loads(file.read()) # Read the contents of the file and parse it as JSON
+    randomColor = choice(list(colors.keys())) # Select a random color from the list of tailwind colors
+    return {"hex": colors[randomColor][choice(tones)]} # Return the random hex code as a JSON object
+
+@app.get("/tailwind/random/rgb")  # Decorator to define the route for generating a random tailwind RGB value
+def randomTailwindRgb(): # Define the randomTailwindRgb function
+    tones = ["50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "950"] # Define the list of tones
+    file = open("colors/tailwind.json", "r") # Open the tailwind.json file in read mode
+    colors = loads(file.read()) # Read the contents of the file and parse it as JSON
+    randomColor = choice(list(colors.keys())) # Select a random color from the list of tailwind colors
+    hexCode = colors[randomColor][choice(tones)] # Select a random tone for the color
+    rgb = HexConverter.hexToRgb(hexCode) # Convert the hex code to RGB values
+    return {"rgb": rgb} # Return the RGB value as a JSON object
+
+@app.get("/tailwind/random/hex/<count>")  # Decorator to define the route for generating multiple random tailwind hex codes
+def randomTailwindHexes(count): # Define the randomTailwindHexes function that takes the count as an argument
+    tones = ["50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "950"] # Define the list of tones
+    file = open("colors/tailwind.json", "r") # Open the tailwind.json file in read mode
+    colors = loads(file.read()) # Read the contents of the file and parse it as JSON
+    hexCodes = [colors[choice(list(colors.keys()))][choice(tones)] for _ in range(int(count))] # Select multiple random hex codes from the list of tailwind colors
+    return {"hex": hexCodes} # Return the hex codes as a JSON object
+
+@app.get("/tailwind/random/rgb/<count>")  # Decorator to define the route for generating multiple random tailwind RGB values
+def randomTailwindRgbs(count): # Define the randomTailwindRgbs function that takes the count as an argument 
+    tones = ["50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "950"] # Define the list of tones
+    file = open("colors/tailwind.json", "r") # Open the tailwind.json file in read mode
+    colors = loads(file.read()) # Read the contents of the file and parse it as JSON
+    hexCodes = [colors[choice(list(colors.keys()))][choice(tones)] for _ in range(int(count))] # Select multiple random hex codes from the list of tailwind colors
+    rgbs = [HexConverter.hexToRgb(hexCode) for hexCode in hexCodes] # Convert the hex codes to RGB values
+    return {"rgb": rgbs} # Return the RGB values as a JSON object
+
+
 
 if __name__ == "__main__": # Check if the script is executed directly
     app.run(debug=True)  # Run the Flask application in debug mode if the script is executed directly
