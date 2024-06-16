@@ -64,13 +64,3 @@ class RGBAConverter:
         # Return the hex code
         return hexCode
 
-
-# Test the converters with some example values and print the results to the console.
-print(HexConverter.hexToRgb('#ff0000')) # (255, 0, 0)
-print(HexConverter.hexToRgba('#ff0000', 0.5)) # (255, 0, 0, 0.5)
-
-print(RGBConverter.rgbToHex((255, 0, 0))) # #ff0000
-print(RGBConverter.rgbToRgba((255, 0, 0), 0.5)) # (255, 0, 0, 0.5)
-
-print(RGBAConverter.rgbaToRgb((255, 0, 0, 0.5))) # (255, 0, 0)
-print(RGBAConverter.rgbaToHex((255, 0, 0, 0.5))) # #ff0000
