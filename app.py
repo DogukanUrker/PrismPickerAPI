@@ -39,6 +39,9 @@ def page_not_found(
 @app.get(
     "/convert/hex/rgb/<hexCode>"
 )  # Decorator to define the route for converting hex to RGB
+@app.get(
+    "/convert/hex/rgb/<hexCode>/"
+)  # Decorator to define the route for converting hex to RGB
 def hexToRgb(
     hexCode,
 ):  # Define the hexToRgb function that takes the hex code as an argument
@@ -51,6 +54,9 @@ def hexToRgb(
 @app.get(
     "/convert/hex/rgba/<hexCode>/<alpha>"
 )  # Decorator to define the route for converting hex to RGBA
+@app.get(
+    "/convert/hex/rgba/<hexCode>/<alpha>/"
+)  # Decorator to define the route for converting hex to RGBA
 def hexToRgba(
     hexCode, alpha
 ):  # Define the hexToRgba function that takes the hex code and alpha value as arguments
@@ -62,6 +68,9 @@ def hexToRgba(
 
 @app.get(
     "/convert/rgb/hex/<r>/<g>/<b>"
+)  # Decorator to define the route for converting RGB to hex
+@app.get(
+    "/convert/rgb/hex/<r>/<g>/<b>/"
 )  # Decorator to define the route for converting RGB to hex
 def rgbToHex(
     r, g, b
@@ -76,6 +85,9 @@ def rgbToHex(
 @app.get(
     "/convert/rgb/rgba/<r>/<g>/<b>/<alpha>"
 )  # Decorator to define the route for converting RGB to RGBA
+@app.get(
+    "/convert/rgb/rgba/<r>/<g>/<b>/<alpha>/"
+)  # Decorator to define the route for converting RGB to RGBA
 def rgbToRgba(
     r, g, b, alpha
 ):  # Define the rgbToRgba function that takes the RGB values as arguments
@@ -88,6 +100,9 @@ def rgbToRgba(
 
 @app.get(
     "/convert/rgba/rgb/<r>/<g>/<b>/<alpha>"
+)  # Decorator to define the route for converting RGBA to RGB
+@app.get(
+    "/convert/rgba/rgb/<r>/<g>/<b>/<alpha>/"
 )  # Decorator to define the route for converting RGBA to RGB
 def rgbaToRgb(
     r, g, b, alpha
@@ -107,6 +122,9 @@ def rgbaToRgb(
 @app.get(
     "/convert/rgba/hex/<r>/<g>/<b>/<alpha>"
 )  # Decorator to define the route for converting RGBA to hex
+@app.get(
+    "/convert/rgba/hex/<r>/<g>/<b>/<alpha>/"
+)  # Decorator to define the route for converting RGBA to hex
 def rgbaToHex(
     r, g, b, alpha
 ):  # Define the rgbaToHex function that takes the RGBA values as arguments
@@ -125,6 +143,9 @@ def rgbaToHex(
 @app.get(
     "/random/hex"
 )  # Decorator to define the route for generating a random hex code
+@app.get(
+    "/random/hex/"
+)  # Decorator to define the route for generating a random hex code
 def randomHex():  # Define the randomHex function
     hexCode = generateRandomHex()  # Generate a random hex code
     return {"hex": hexCode}  # Return the hex code as a JSON object
@@ -132,6 +153,9 @@ def randomHex():  # Define the randomHex function
 
 @app.get(
     "/random/rgb"
+)  # Decorator to define the route for generating a random RGB value
+@app.get(
+    "/random/rgb/"
 )  # Decorator to define the route for generating a random RGB value
 def randomRgb():  # Define the randomRgb function
     hexCode = generateRandomHex()  # Generate a random hex code
@@ -142,6 +166,9 @@ def randomRgb():  # Define the randomRgb function
 @app.get(
     "/random/rgba/"
 )  # Decorator to define the route for generating a random RGBA value
+@app.get(
+    "/random/rgba"
+)  # Decorator to define the route for generating a random RGBA value
 def randomRgba():  # Define the randomRgba function
     hexCode = generateRandomHex()  # Generate a random hex code
     rgba = HexConverter.hexToRgba(
@@ -151,6 +178,9 @@ def randomRgba():  # Define the randomRgba function
 
 
 @app.get("/random")  # Decorator to define the route for generating a random color value
+@app.get(
+    "/random/"
+)  # Decorator to define the route for generating a random color value
 def randomColor():  # Define the randomColor function
     hexCode = generateRandomHex()  # Generate a random hex code
     rgb = HexConverter.hexToRgb(
@@ -169,6 +199,9 @@ def randomColor():  # Define the randomColor function
 @app.get(
     "/random/hex/<count>"
 )  # Decorator to define the route for generating multiple random hex codes
+@app.get(
+    "/random/hex/<count>/"
+)  # Decorator to define the route for generating multiple random hex codes
 def randomHexes(
     count,
 ):  # Define the randomHexes function that takes the count as an argument
@@ -180,6 +213,9 @@ def randomHexes(
 
 @app.get(
     "/random/rgb/<count>"
+)  # Decorator to define the route for generating multiple random RGB values
+@app.get(
+    "/random/rgb/<count>/"
 )  # Decorator to define the route for generating multiple random RGB values
 def randomRgbs(
     count,
@@ -196,6 +232,9 @@ def randomRgbs(
 @app.get(
     "/random/rgba/<count>"
 )  # Decorator to define the route for generating multiple random RGBA values
+@app.get(
+    "/random/rgba/<count>/"
+)  # Decorator to define the route for generating multiple random RGBA values
 def randomRgbas(
     count,
 ):  # Define the randomRgbas function that takes the count as an argument
@@ -210,6 +249,9 @@ def randomRgbas(
 
 @app.get(
     "/random/<count>"
+)  # Decorator to define the route for generating multiple random color values
+@app.get(
+    "/random/<count>/"
 )  # Decorator to define the route for generating multiple random color values
 def randomColors(
     count,
@@ -233,6 +275,9 @@ def randomColors(
 @app.get(
     "/tailwind"
 )  # Decorator to define the route for returns all the tailwind colors
+@app.get(
+    "/tailwind/"
+)  # Decorator to define the route for returns all the tailwind colors
 def tailwind():  # Define the tailwind function
     file = open("colors/tailwind.json", "r")  # Open the tailwind.json file in read mode
     colors = loads(file.read())  # Read the contents of the file and parse it as JSON
@@ -241,6 +286,9 @@ def tailwind():  # Define the tailwind function
 
 @app.get(
     "/tailwind/<color>"
+)  # Decorator to define the route for returning a specific tailwind color
+@app.get(
+    "/tailwind/<color>/"
 )  # Decorator to define the route for returning a specific tailwind color
 def tailwindColor(
     color,
@@ -256,6 +304,9 @@ def tailwindColor(
 @app.get(
     "/tailwind/random"
 )  # Decorator to define the route for generating a random tailwind color
+@app.get(
+    "/tailwind/random/"
+)  # Decorator to define the route for generating a random tailwind color
 def randomTailwind():  # Define the randomTailwind function
     file = open("colors/tailwind.json", "r")  # Open the tailwind.json file in read mode
     colors = loads(file.read())  # Read the contents of the file and parse it as JSON
@@ -267,6 +318,9 @@ def randomTailwind():  # Define the randomTailwind function
 
 @app.get(
     "/tailwind/random/<count>"
+)  # Decorator to define the route for generating multiple random tailwind colors
+@app.get(
+    "/tailwind/random/<count>/"
 )  # Decorator to define the route for generating multiple random tailwind colors
 def randomTailwinds(
     count,
@@ -281,6 +335,9 @@ def randomTailwinds(
 
 @app.get(
     "/tailwind/random/hex"
+)  # Decorator to define the route for generating a random tailwind hex code
+@app.get(
+    "/tailwind/random/hex/"
 )  # Decorator to define the route for generating a random tailwind hex code
 def randomTailwindHex():  # Define the randomTailwindHex function
     tones = [
@@ -309,6 +366,9 @@ def randomTailwindHex():  # Define the randomTailwindHex function
 @app.get(
     "/tailwind/random/rgb"
 )  # Decorator to define the route for generating a random tailwind RGB value
+@app.get(
+    "/tailwind/random/rgb/"
+)  # Decorator to define the route for generating a random tailwind RGB value
 def randomTailwindRgb():  # Define the randomTailwindRgb function
     tones = [
         "50",
@@ -336,6 +396,9 @@ def randomTailwindRgb():  # Define the randomTailwindRgb function
 @app.get(
     "/tailwind/random/hex/<count>"
 )  # Decorator to define the route for generating multiple random tailwind hex codes
+@app.get(
+    "/tailwind/random/hex/<count>/"
+)  # Decorator to define the route for generating multiple random tailwind hex codes
 def randomTailwindHexes(
     count,
 ):  # Define the randomTailwindHexes function that takes the count as an argument
@@ -362,6 +425,9 @@ def randomTailwindHexes(
 
 @app.get(
     "/tailwind/random/rgb/<count>"
+)  # Decorator to define the route for generating multiple random tailwind RGB values
+@app.get(
+    "/tailwind/random/rgb/<count>/"
 )  # Decorator to define the route for generating multiple random tailwind RGB values
 def randomTailwindRgbs(
     count,
@@ -393,6 +459,9 @@ def randomTailwindRgbs(
 @app.route(
     "/mixer/rgb/<r1>/<g1>/<b1>/<r2>/<g2>/<b2>"
 )  # Decorator to define the route for mixing two RGB colors
+@app.route(
+    "/mixer/rgb/<r1>/<g1>/<b1>/<r2>/<g2>/<b2>/"
+)  # Decorator to define the route for mixing two RGB colors
 def mix2Rgb(
     r1, g1, b1, r2, g2, b2
 ):  # Define the mixRgb function that takes the RGB values of two colors as arguments
@@ -406,6 +475,9 @@ def mix2Rgb(
 
 @app.route(
     "/mixer/rgba/<r1>/<g1>/<b1>/<a1>/<r2>/<g2>/<b2>/<a2>"
+)  # Decorator to define the route for mixing two RGBA colors
+@app.route(
+    "/mixer/rgba/<r1>/<g1>/<b1>/<a1>/<r2>/<g2>/<b2>/<a2>/"
 )  # Decorator to define the route for mixing two RGBA colors
 def mix2Rgba(
     r1, g1, b1, a1, r2, g2, b2, a2
@@ -431,6 +503,9 @@ def mix2Rgba(
 @app.route(
     "/mixer/hex/<hex1>/<hex2>"
 )  # Decorator to define the route for mixing two hex colors
+@app.route(
+    "/mixer/hex/<hex1>/<hex2>/"
+)  # Decorator to define the route for mixing two hex colors
 def mix2Hex(
     hex1, hex2
 ):  # Define the mixHex function that takes the hex codes of two colors as arguments
@@ -446,6 +521,9 @@ def mix2Hex(
 
 @app.route(
     "/mixer/hex", methods=["GET"]
+)  # Decorator to define the route for mixing multiple hex colors
+@app.route(
+    "/mixer/hex/", methods=["GET"]
 )  # Decorator to define the route for mixing multiple hex colors
 def hexMixer():  # Define the hexMixer function
     colors = request.args.getlist(
@@ -479,6 +557,9 @@ def hexMixer():  # Define the hexMixer function
 
 @app.route(
     "/mixer/rgb", methods=["GET"]
+)  # Decorator to define the route for mixing multiple RGB colors
+@app.route(
+    "/mixer/rgb/", methods=["GET"]
 )  # Decorator to define the route for mixing multiple RGB colors
 def rgbMixer():  # Define the rgbMixer function
     colors = request.args.getlist(
@@ -517,6 +598,9 @@ def rgbMixer():  # Define the rgbMixer function
 @app.route(
     "/mixer/rgba", methods=["GET"]
 )  # Decorator to define the route for mixing multiple RGBA colors
+@app.route(
+    "/mixer/rgba/", methods=["GET"]
+)  # Decorator to define the route for mixing multiple RGBA colors
 def rgbaMixer():  # Define the rgbaMixer function
     colors = request.args.getlist(
         "color"
@@ -554,6 +638,9 @@ def rgbaMixer():  # Define the rgbaMixer function
 @app.route(
     "/image/rgb/<r>/<g>/<b>/<w>/<h>"
 )  # Decorator to define the route for generating an image with RGB color
+@app.route(
+    "/image/rgb/<r>/<g>/<b>/<w>/<h>/"
+)  # Decorator to define the route for generating an image with RGB color
 def imageRgb(
     r, g, b, w, h
 ):  # Define the imageRgb function that takes the RGB values and dimensions as arguments
@@ -567,6 +654,9 @@ def imageRgb(
 @app.route(
     "/image/hex/<hex>/<w>/<h>"
 )  # Decorator to define the route for generating an image with hex color
+@app.route(
+    "/image/hex/<hex>/<w>/<h>/"
+)  # Decorator to define the route for generating an image with hex color
 def imageHex(
     hex, w, h
 ):  # Define the imageHex function that takes the hex code and dimensions as arguments
@@ -578,25 +668,10 @@ def imageHex(
 
 
 @app.route(
-    "/image/rgba/<r>/<g>/<b>/<a>/<w>/<h>"
-)  # Decorator to define the route for generating an image with RGBA color
-def imageRgba(
-    r, g, b, a, w, h
-):  # Define the imageRgba function that takes the RGBA values and dimensions as arguments
-    rgba = (
-        int(r),
-        int(g),
-        int(b),
-        float(a),
-    )  # Convert the RGB values to integers and the alpha value to a float
-    img = Image.new(
-        "RGBA", (int(w), int(h)), rgba
-    )  # Create a new RGBA image with the specified dimensions and color
-    return serveImage(img)  # Return the image as a response
-
-
-@app.route(
     "/image/random/<w>/<h>"
+)  # Decorator to define the route for generating an image with random color
+@app.route(
+    "/image/random/<w>/<h>/"
 )  # Decorator to define the route for generating an image with random color
 def imageRandom(w, h):
     hexCode = generateRandomHex()
@@ -607,6 +682,9 @@ def imageRandom(w, h):
 
 @app.route(
     "/image/random/tailwind/<w>/<h>"
+)  # Decorator to define the route for generating an image with random tailwind color
+@app.route(
+    "/image/random/tailwind/<w>/<h>/"
 )  # Decorator to define the route for generating an image with random tailwind color
 def imageRandomTailwind(
     w,
@@ -641,6 +719,9 @@ def imageRandomTailwind(
 @app.route(
     "/image/random/tailwind/tone/<tone>/<w>/<h>"
 )  # Decorator to define the route for generating an image with random tailwind color
+@app.route(
+    "/image/random/tailwind/tone/<tone>/<w>/<h>/"
+)  # Decorator to define the route for generating an image with random tailwind color
 def imageRandomTailwindSettedTone(
     tone,
     w,
@@ -661,6 +742,9 @@ def imageRandomTailwindSettedTone(
 
 @app.route(
     "/image/hex/gradient/<color1>/<color2>/<w>/<h>"
+)  # Decorator to define the route for generating a gradient image
+@app.route(
+    "/image/hex/gradient/<color1>/<color2>/<w>/<h>/"
 )  # Decorator to define the route for generating a gradient image
 def gradientHex(
     color1, color2, w, h
@@ -687,6 +771,9 @@ def gradientHex(
 
 @app.route(
     "/image/random/gradient/<w>/<h>"
+)  # Decorator to define the route for generating a random gradient image
+@app.route(
+    "/image/random/gradient/<w>/<h>/"
 )  # Decorator to define the route for generating a random gradient image
 def randomGradient(
     w, h
@@ -715,6 +802,9 @@ def randomGradient(
 
 @app.route(
     "/image/random/tailwind/gradient/<tone>/<w>/<h>"
+)  # Decorator to define the route for generating a random tailwind gradient image
+@app.route(
+    "/image/random/tailwind/gradient/<tone>/<w>/<h>/"
 )  # Decorator to define the route for generating a random tailwind gradient image
 def randomTailwindGradient(
     tone, w, h
@@ -752,6 +842,9 @@ def randomTailwindGradient(
 @app.route(
     "/image/tailwind/<color>/<tone>/<w>/<h>"
 )  # Decorator to define the route for generating an image with a specific tailwind color
+@app.route(
+    "/image/tailwind/<color>/<tone>/<w>/<h>/"
+)  # Decorator to define the route for generating an image with a specific tailwind color
 def imageTailwind(
     color, tone, w, h
 ):  # Define the imageTailwind function that takes the color, tone, and dimensions as arguments
@@ -768,6 +861,9 @@ def imageTailwind(
 @app.route(
     "/material"
 )  # Decorator to define the route for returning all the material colors
+@app.route(
+    "/material/"
+)  # Decorator to define the route for returning all the material colors
 def material():  # Define the material function
     file = open("colors/material.json", "r")  # Open the material.json file in read mode
     colors = loads(file.read())  # Read the contents of the file and parse it as JSON
@@ -776,6 +872,9 @@ def material():  # Define the material function
 
 @app.route(
     "/material/<color>"
+)  # Decorator to define the route for returning a specific material color
+@app.route(
+    "/material/<color>/"
 )  # Decorator to define the route for returning a specific material color
 def materialColor(
     color,
@@ -791,6 +890,9 @@ def materialColor(
 @app.route(
     "/material/random"
 )  # Decorator to define the route for generating a random material color
+@app.route(
+    "/material/random/"
+)  # Decorator to define the route for generating a random material color
 def randomMaterial():  # Define the randomMaterial function
     file = open("colors/material.json", "r")  # Open the material.json file in read mode
     colors = loads(file.read())  # Read the contents of the file and parse it as JSON
@@ -802,6 +904,9 @@ def randomMaterial():  # Define the randomMaterial function
 
 @app.route(
     "/material/random/<count>"
+)  # Decorator to define the route for generating multiple random material colors
+@app.route(
+    "/material/random/<count>/"
 )  # Decorator to define the route for generating multiple random material colors
 def randomMaterials(
     count,
@@ -816,6 +921,9 @@ def randomMaterials(
 
 @app.route(
     "/material/random/hex"
+)  # Decorator to define the route for generating a random material hex code
+@app.route(
+    "/material/random/hex/"
 )  # Decorator to define the route for generating a random material hex code
 def randomMaterialHex():  # Define the randomMaterialHex function
     tones = [
@@ -847,6 +955,9 @@ def randomMaterialHex():  # Define the randomMaterialHex function
 @app.route(
     "/material/random/rgb"
 )  # Decorator to define the route for generating a random material RGB value
+@app.route(
+    "/material/random/rgb/"
+)  # Decorator to define the route for generating a random material RGB value
 def randomMaterialRgb():  # Define the randomMaterialRgb function
     tones = [
         "50",
@@ -877,6 +988,9 @@ def randomMaterialRgb():  # Define the randomMaterialRgb function
 @app.route(
     "/material/random/hex/<count>"
 )  # Decorator to define the route for generating multiple random material hex codes
+@app.route(
+    "/material/random/hex/<count>/"
+)  # Decorator to define the route for generating multiple random material hex codes
 def randomMaterialHexes(
     count,
 ):  # Define the randomMaterialHexes function that takes the count as an argument
@@ -906,6 +1020,9 @@ def randomMaterialHexes(
 
 @app.route(
     "/material/random/rgb/<count>"
+)  # Decorator to define the route for generating multiple random material RGB values
+@app.route(
+    "/material/random/rgb/<count>/"
 )  # Decorator to define the route for generating multiple random material RGB values
 def randomMaterialRgbs(
     count,
@@ -940,6 +1057,9 @@ def randomMaterialRgbs(
 @app.route(
     "/image/material/<color>/<w>/<h>"
 )  # Decorator to define the route for generating an image with a specific material color
+@app.route(
+    "/image/material/<color>/<w>/<h>/"
+)  # Decorator to define the route for generating an image with a specific material color
 def imageMaterial(
     color, w, h
 ):  # Define the imageMaterial function that takes the color and dimensions as arguments
@@ -956,6 +1076,9 @@ def imageMaterial(
 
 @app.route(
     "/image/material/gradient/<color1>/<color2>/<w>/<h>"
+)  # Decorator to define the route for generating a gradient image
+@app.route(
+    "/image/material/gradient/<color1>/<color2>/<w>/<h>/"
 )  # Decorator to define the route for generating a gradient image
 def gradientMaterial(
     color1, color2, w, h
@@ -990,6 +1113,9 @@ def gradientMaterial(
 @app.route(
     "/image/material/random/<w>/<h>"
 )  # Decorator to define the route for generating an image with random material color
+@app.route(
+    "/image/material/random/<w>/<h>/"
+)  # Decorator to define the route for generating an image with random material color
 def imageRandomMaterial(
     w, h
 ):  # Define the imageRandomMaterial function that takes the dimensions as arguments
@@ -1009,6 +1135,9 @@ def imageRandomMaterial(
 
 @app.route(
     "/image/material/random/gradient/<w>/<h>"
+)  # Decorator to define the route for generating a random gradient image
+@app.route(
+    "/image/material/random/gradient/<w>/<h>/"
 )  # Decorator to define the route for generating a random gradient image
 def randomGradientMaterial(
     w, h
@@ -1047,6 +1176,9 @@ def randomGradientMaterial(
 
 @app.route(
     "/image/material/random/tone/gradient/<tone>/<w>/<h>"
+)  # Decorator to define the route for generating a random material gradient image
+@app.route(
+    "/image/material/random/tone/gradient/<tone>/<w>/<h>/"
 )  # Decorator to define the route for generating a random material gradient image
 def randomToneGradientMaterial(
     tone, w, h
